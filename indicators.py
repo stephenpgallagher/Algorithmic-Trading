@@ -15,7 +15,9 @@ def moving_average(stock_price, n=7, weights=[]):
         ma (ndarray): the n-day (possibly weighted) moving average of the share price over time.
     '''
     # Initialise the array
+    # shape[0] gives the number of days as rows
     days = stock_price.shape[0]
+    # Initialising moving averages
     ma = np.zeros(stock_price.shape)
 
     if not weights:
@@ -62,7 +64,7 @@ def oscillator(stock_price, n=7, osc_type='stochastic'):
         elif osc_type == 'RSI':
             # Find all price differences
             diffs = np.diff(stock_price[d-n+1:d+1])
-            #  diffs = stock_price[d-n+1:d+1] - stock_price[d-n:d]
+            # OR diffs = stock_price[d-n+1:d+1] - stock_price[d-n:d]
 
             # Find average positive and negative differences
             if np.any(diffs > 0):

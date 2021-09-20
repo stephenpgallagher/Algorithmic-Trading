@@ -19,11 +19,11 @@ def random(stock_prices, period=7, amount=5000, fees=20, ledger='ledger_random.t
 
     Output: None
     '''
-    # Create an empty ledger file (if it exists, erase it first)
+    # Create an empty ledger writing file
     open(ledger, 'w').close()
 
     # Handle possibility of stock_prices being a single column
-    ndims = len(stock_prices.shape)     # or ndims = stock_prices.ndim
+    ndims = len(stock_prices.shape)
     if ndims == 1:
         # Make it a 2D array
         stock_prices = stock_prices.reshape((stock_prices.shape[0], 1))
@@ -32,7 +32,7 @@ def random(stock_prices, period=7, amount=5000, fees=20, ledger='ledger_random.t
     N = stock_prices.shape[1]
     portfolio = proc.create_portfolio([amount] * N, stock_prices, fees, ledger)
 
-    # Every period, randomly decide whether to do nothing, buy, or sell all
+    # Every period, randomly decide whether to do nothing, buy, or sell all shares
     rng = np.random.default_rng()
     for day in range(0, stock_prices.shape[0], period):
         # Make the decision for each stock
@@ -40,7 +40,7 @@ def random(stock_prices, period=7, amount=5000, fees=20, ledger='ledger_random.t
             decision = rng.choice([-1, 0, 1], p=[1/3, 1/3, 1/3])
 
             if decision == -1:
-                # Sell everything
+                # Sell shares
                 proc.sell(day, stock, stock_prices, fees, portfolio, ledger)
             elif decision == 1:
                 # Buy shares
